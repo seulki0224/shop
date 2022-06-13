@@ -66,7 +66,7 @@ function Detail(props) {
       />
       <br/><br/>
 
-      {count} 
+      {count}
       <button onClick={() => setCount(count + 1)}>버튼</button>
       
       <div className="row">

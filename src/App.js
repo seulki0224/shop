@@ -2,19 +2,21 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Navbar, Container, Nav } from "react-bootstrap";
 // import { useState } from 'react';
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // import data from "../../../../../Desktop/220521/shop/src/data.js";
-import data from "../src/data";
 import { Routes, Route, Link, useNavigate, Outlet } from "react-router-dom";
 import Detail from "./routes/Detail.js";
 import NotFound from "./routes/NotFound.js";
+import axios from 'axios'
+import data from "../src/data";
 
 function App() {
-  let [shoes] = useState(data);
+  let [shoes, setShoes] = useState(data);
   let navigate = useNavigate();
-
-  return (
+  
+  return (    
     <div>
+
       <Navbar bg="dark" variant="dark">
         <Container>
           <Navbar.Brand href="/">ShoeShop</Navbar.Brand>
@@ -94,14 +96,14 @@ function App() {
       </Navbar>
 
       <Routes>
-        <Route
-          path="/"
-          element={
-            <>
+        <Route path="/" element={
+            <>            
               <div
                 className="main-bg"
                 style={{ backgroundImage: "url(" + "./img/bg.png" + ")" }}
-              ></div>
+              >                
+              </div>
+
               <div className="container">
                 <div className="row">
                   {shoes.map((a, index) => {
@@ -116,17 +118,16 @@ function App() {
                   })}
                 </div>
               </div>
+
             </>
           }
         />
         <Route path="/detail/:id" element={<Detail shoes={shoes} />} />
-
         {/* Nested Routes */}
         <Route path="/about" element={<About />}>
           <Route path="member" element={<div>멤버임</div>}></Route>
           <Route path="location" element={<div>location</div>}></Route>
         </Route>
-
         <Route path="/event" element={<Event />}>
           <Route
             path="one"
@@ -134,9 +135,48 @@ function App() {
           ></Route>
           <Route path="two" element={<p>생일기념 쿠폰받기</p>}></Route>
         </Route>
-
         <Route path="*" element={<NotFound />} />
       </Routes>
+
+      {/* 서버와 통신을 위한 ajax1 */}
+  
+      <button onClick={()=>{
+        //ajax Get요청 axios.get('url')
+        //ajax Get요청 axios.get('url').then()
+        axios.get('https://codingapple1.github.io/shop/data2.json')
+        .then((result)=>{
+          console.log(result) //콜백함수
+          console.log(result.data) //콜백함수
+          console.log(result.data[2].title)        
+        })
+        .catch(()=>{
+          console.log('실패함')
+        })
+      }}>데이터 더 불러오기
+      </button>
+
+      <div style={{background:'#ddd'}}>
+        <button onClick={()=>{
+            axios.get('https://codingapple1.github.io/shop/data2.json')
+            .then((result)=>{
+              console.log(result) //콜백함수
+              console.log(result.data) //콜백함수
+              console.log(result.data[2].title)         
+
+              console.log(shoes,'9999999999') ;
+
+              setShoes([...shoes, ...result.data])
+              console.log(shoes);
+            })
+            .catch(()=>{
+              console.log('실패함')
+            })            
+            
+        }}>데이터 추가
+        </button>
+      </div>
+      
+
     </div>
   );
 }
@@ -149,7 +189,6 @@ function About() {
     </div>
   );
 }
-
 function Event() {
   return (
     <div>
@@ -158,20 +197,20 @@ function Event() {
     </div>
   );
 }
-
 function Card(props) {
   return (
     <>
-      <div
-        className="col-md-4"
+      <div className="col-md-4"
         onClick={() => {
           props.navigate(`/detail/${props.index}`);
         }}
       >
         <img src={`img/shoes${props.index}.jpg`} width="80%" />
+        {console.log(props.index,'props----')}
         <h4>{props.shoes.title}</h4>
         <p>{props.shoes.price}</p>
       </div>
+
     </>
   );
 }
