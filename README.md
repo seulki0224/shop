@@ -42,3 +42,7 @@ $ npm run build
 $ npm run preview
 
 https://vitejs-kr.github.io/guide/static-deploy.html
+
+
+# React JS를 Github Pages에 호스팅
+# Build
