@@ -101,8 +101,11 @@ function App() {
             <>
               <div
                 className="main-bg"
-                style={{ backgroundImage: "url(" + "./img/bg.png" + ")" }}
+                // style={{ backgroundImage: "url(" + "./img/bg.png" + ")" }}
+                style={{ backgroundImage: "url(https://github.com/seulki0224/shop/blob/main/src/img/hello3.png?raw=true)" }}
+                
               ></div>
+              
 
               <div className="container">
                 <div className="row">
@@ -163,7 +166,8 @@ function Card(props) {
           props.navigate(`/detail/${props.index +1}`);
         }}
       >
-        <img src={`https://codingapple1.github.io/shop/shoes${props.index + 1}.jpg`} width="80%" />
+        {/* <img src={`https://codingapple1.github.io/shop/shoes${props.index + 1}.jpg`} width="80%" /> */}
+        <img src={`https://picsum.photos/id/${props.index + 10}/200/100.jpg`} width="80%" />
         <h4>{props.shoes.title}</h4>
         <p>{props.shoes.price}</p>
       </div>
