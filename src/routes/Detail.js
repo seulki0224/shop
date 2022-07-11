@@ -4,11 +4,17 @@ import { useParams } from "react-router-dom";
 // import styled from "styled-components";
 
 function Detail(props) {
-
   let [count, setCount] = useState(0);
   let [alert, setAlert] = useState(true);
   let { id } = useParams();
-  let 찾은상품 = props.shoes.find(x => x.id == id);
+  let 찾은상품 = props.shoes.find(x => x.id == id);  
+  let [num, setNum] = useState("");
+
+  useEffect(() => {
+    if (isNaN(num) == true) {
+      console.log("그러지마세요");
+    }
+  }, [num]);
 
   //2초뒤에 div 사라짐
   /* useEffect(() => {
@@ -36,18 +42,8 @@ function Detail(props) {
       console.log("기존타이머 제거")
       //기존 데이터 영역 제거 해주세요 등으로 활용
     }
-
   }) */
 
-  //숫자만 입력 가능
-  let [num, setNum] = useState("");
-
-  useEffect(() => {
-    if (isNaN(num) == true) {
-      console.log("그러지마세요");
-    }
-  }, [num]);
-  
   return (
     <div className="container">
       
@@ -59,19 +55,22 @@ function Detail(props) {
       }      
       <br/><br/>
 
+
       {/* [num] */}
-      <input onChange={ e => {
+      {/* <input onChange={ e => {
           setNum(e.target.value);
         }}
       />
       <br/><br/>
 
       {count}
-      <button onClick={() => setCount(count + 1)}>버튼</button>
+      <button onClick={() => setCount(count + 1)}>버튼</button> */}
       
       <div className="row">
         <div className="col-md-6">
-          <img src={`../img/shoes${id}.jpg`} width="100%" />
+          {/* <img src={`../img/shoes${id}.jpg`} width="100%" /> */}
+          <img src={`https://codingapple1.github.io/shop/shoes${id}.jpg`} width="100%" />
+          
         </div>
         <div className="col-md-6">
           <h4 className="pt-5">{찾은상품.title}</h4>
@@ -80,6 +79,7 @@ function Detail(props) {
           <button className="btn btn-danger">주문하기</button>
         </div>
       </div>
+
     </div>
   );
 }
