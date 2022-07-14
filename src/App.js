@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Navbar, Container, Nav } from "react-bootstrap";
 // import { useState } from 'react';
 import React, { useEffect, useState } from "react";
+// import data from "../../../../../Desktop/220521/shop/src/data.js";
 import { Routes, Route, Link, useNavigate, Outlet } from "react-router-dom";
 import Detail from "./routes/Detail.js";
 import NotFound from "./routes/NotFound.js";
@@ -11,8 +12,8 @@ import data from "../src/data";
 
 function App() {
   let [shoes, setShoes] = useState(data);
-  let navigate = useNavigate();  
-  //let [버튼, 버튼클릭] = useState[(0, 0)];
+  let navigate = useNavigate();
+  let [btnClickCNT, setBtnClickCNT] = useState(0);
 
   return (
     <div>
@@ -101,11 +102,8 @@ function App() {
             <>
               <div
                 className="main-bg"
-                // style={{ backgroundImage: "url(" + "./img/bg.png" + ")" }}
-                style={{ backgroundImage: "url(https://github.com/seulki0224/shop/blob/main/src/img/hello3.png?raw=true)" }}
-                
+                style={{ backgroundImage: "url(" + "./img/bg.png" + ")" }}
               ></div>
-              
 
               <div className="container">
                 <div className="row">
@@ -116,8 +114,6 @@ function App() {
                   })}
                 </div>
               </div>
-
-              <More shoes={shoes} setShoes={setShoes}/>
             </>
           }
         />
@@ -134,11 +130,73 @@ function App() {
         <Route path="*" element={<NotFound />} />
       </Routes>
 
-      
-      
       {/* 서버와 통신을 위한 ajax1 */}
+
+      <div style={{ textAlign: "center" }}>
+        <button
+          onClick={() => {
+            //로딩중 UI 띄우기~
+            //ajax Get요청 axios.get('url')
+            //ajax Get요청 axios.get('url').then()
+            axios
+              .get("https://codingapple1.github.io/shop/data2.json")
+              .then((result) => {
+                let copy = [...shoes, ...result.data];
+                console.log("copy =", copy); //콜백함수
+
+                setShoes([...shoes, ...result.data]);
+                console.log(result); //콜백함수
+                console.log(result.data); //콜백함수
+                console.log(result.data[2].title);
+              })
+              .catch(
+                () => {
+                  console.log("실패함");
+                }
+                //로딩중 UI숨기기~
+              );
+          }}
+        >
+          더보기
+        </button>
+
+        <button
+          onClick={() => {
+            console.log("click");
+            let click = [...props.viewCount];
+            따봉분리[index] = 따봉분리[index] + 1;
+            props.setViewCount(따봉분리);
+            props.setDetail(!props.detail);
+            props.setTitleCNT(index);
+            console.log("Boardlist 포커스 실행", index);
+            //로딩중 UI 띄우기~
+            //ajax Get요청 axios.get('url')
+            //ajax Get요청 axios.get('url').then()
+            axios
+              .get("https://codingapple1.github.io/shop/data3.json")
+              .then((result) => {
+                let copy3 = [...shoes, ...result.data];
+                console.log("copy =", copy3); //콜백함수
+
+                setShoes([...shoes, ...result.data]);
+                console.log("result : ", result); //콜백함수
+                console.log("result.data : ", result.data); //콜백함수
+                console.log("result.data[3].title : ", result.data[3].title);
+              })
+              .catch(
+                () => {
+                  console.log("실패함");
+                }
+                //로딩중 UI숨기기~
+              );
+          }}
+        >
+          {/* Todo 버튼 누른 횟수 기록 */}
+          더보기(7,8,9)
+        </button>
+      </div>
     </div>
-  )
+  );
 }
 
 function About() {
@@ -163,127 +221,18 @@ function Card(props) {
       <div
         className="col-md-4"
         onClick={() => {
-          props.navigate(`/detail/${props.index +1}`);
+          props.navigate(`/detail/${props.index}`);
         }}
       >
-        {/* <img src={`https://codingapple1.github.io/shop/shoes${props.index + 1}.jpg`} width="80%" /> */}
-        <img src={`https://picsum.photos/id/${props.index + 10}/200/100.jpg`} width="80%" />
+        {/* <img src={`img/shoes${props.index}.jpg`} width="80%" /> */}
+        {/* https://codingapple1.github.io/shop/shoes1.jpg */}
+        <img src={`https://codingapple1.github.io/shop/shoes${props.index + 1}.jpg`} width="80%" />
+        {/* {console.log(props.index, "props----")} */}
         <h4>{props.shoes.title}</h4>
         <p>{props.shoes.price}</p>
       </div>
-
     </>
   );
-}
-function More(props) {  
-  return(
-    <div className="more" style={{ textAlign: "center" }}>
-    {/* 
-    <button
-      onClick={() => {
-        //로딩중 UI 띄우기~
-        //ajax Get요청 axios.get('url')
-        //ajax Get요청 axios.get('url').then()
-        axios.get("https://codingapple1.github.io/shop/data2.json")
-          .then((result) => {
-            console.log(result);
-          let copy2 = [...shoes, ...result.data];
-          console.log("copy =", copy2); //콜백함수
-
-          setShoes([...shoes, ...result.data]);
-          console.log(result); //콜백함수
-          console.log(result.data); //콜백함수
-          console.log(result.data[2].title);              
-        })
-        .catch(
-          () => {
-            console.log("실패함");
-          }
-          //로딩중 UI숨기기~
-        );
-      }}
-    >
-      More1
-    </button>
-    <button
-      onClick={() => {
-        //get: 서버에서 데이터 가져오기
-        // setTimeout(()=>{ <img src ="https://icons8.com/preloaders/preloaders/1494/Spinner-2.gif"/> }, 100000)
-        axios.get("https://codingapple1.github.io/shop/data3.json")
-        .then((result) => {
-          let copy3 = [...shoes, ...result.data];
-          setShoes(copy3);              
-        })
-        .catch(
-          () => {
-            console.log("실패함");
-          }
-          //로딩중 UI숨기기~
-        );
-
-        //post:서버로 데이터 전송
-        axios.post()
-      }}
-    >
-      More2
-    </button>
-
-    <button onClick={() => {
-      axios.get("https://codingapple1.github.io/shop/data3.json")
-        .then((result) => {
-          console.log(result);
-          console.log(result.data); 
-        })
-    }}>
-    More3
-    </button> 
-    */}        
-    
-    <button
-      onClick={() => {
-        // axios.get("https://codingapple1.github.io/shop/data3.json")
-        
-        //안됨
-        Promise.all([
-          axios.get("https://codingapple1.github.io/shop/data2.json"),
-          axios.get("https://codingapple1.github.io/shop/data3.json")
-        ])      
-        
-        // fetch('https://codingapple1.github.io/shop/data2.json')
-        // .then((response) => response.json())
-        // .then((data) => console.log(data))
-    
-        // axios.post('https://codingapple1.github.io/shop/data2.json', { title: 'Flowey' })
-
-          .then((result) => { 
-      
-            console.log('result',result);
-
-            // console.log(result[0].data);
-            // console.log(result[1].data);
-
-            const resultData = result.flatMap((value) => {
-              return value.data;
-            })
-            
-            
-            let copy4 = [...props.shoes, ...resultData];
-            
-            console.log(resultData);
-            props.setShoes(copy4);   
-        }) 
-        
-        .catch(() => {
-          console.log("실패함");
-        })
-      
-      }}
-    >
-      동시에 여러 데이터 호출
-    </button>
-    
-    </div>
-  )
 }
 
 export default App;
